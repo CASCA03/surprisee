@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Quiz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+font-family:Arial;
+background:black;
+}
+
+/* SLIDES */
+
+.slide{
+height:100vh;
+width:100%;
+position:absolute;
+display:flex;
+justify-content:center;
+align-items:center;
+background-size:110%;
+background-position:center;
+background-repeat:no-repeat;
+transition:background-position .15s;
+}
+
+#slide1{background-image:url("bg1.jpg")}
+#slide2{background-image:url("bg2.jpg")}
+#slide3{background-image:url("bg5.jpg")}
+#slide4{background-image:url("bg4.jpg")}
+#slide5{background-image:url("bg3.jpg")}
+#slide6{background-image:url("bg4.jpg")}
+
+/* CONTAINER */
+
+.container{
+background:rgba(255,255,255,0.92);
+padding:40px;
+border-radius:20px;
+width:420px;
+max-width:90%;
+box-shadow:0 15px 40px rgba(0,0,0,0.4);
+text-align:center;
+}
+
+/* BUTTON */
+
+button{
+padding:12px 20px;
+font-size:18px;
+margin:10px;
+cursor:pointer;
+border:none;
+border-radius:10px;
+background:#ff6fa5;
+color:white;
+transition:.25s;
+}
+
+button:hover{
+transform:scale(1.15);
+background:#ff3d8b;
+}
+
+/* CALENDAR */
+
+select{
+padding:10px 14px;
+margin:5px;
+font-size:16px;
+border-radius:10px;
+border:none;
+background:white;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+cursor:pointer;
+}
+
+/* ERROR MESSAGE */
+
+#errorMsg{
+color:#ff3d8b;
+font-weight:bold;
+display:none;
+margin-top:10px;
+}
+
+/* CANDLES */
+
+.candles{
+font-size:35px;
+margin-bottom:-20px;
+}
+
+/* CAKE */
+
+.cake{
+font-size:120px;
+cursor:pointer;
+}
+
+/* GIFT */
+
+.gift{
+font-size:90px;
+cursor:pointer;
+animation:shake 1s infinite;
+}
+
+@keyframes shake{
+0%{transform:rotate(0)}
+25%{transform:rotate(-8deg)}
+50%{transform:rotate(8deg)}
+75%{transform:rotate(-5deg)}
+100%{transform:rotate(0)}
+}
+
+/* CONFETTI */
+
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-10px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{transform:translateY(110vh) rotate(720deg)}
+}
+
+/* HEARTS */
+
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:20px;
+animation:float 4s linear forwards;
+}
+
+@keyframes float{
+to{transform:translateY(-110vh);opacity:0}
+}
+
+/* FIREWORK */
+
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+}
+
+/* TYPING TEXT */
+
+#typedMessage{
+font-size:20px;
+margin-top:15px;
+min-height:30px;
+}
+
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" autoplay loop>
+<source src="bgmusic.mp3" type="audio/mpeg">
+</audio>
+
+<!-- SLIDE 1 -->
+
+<div class="slide" id="slide1">
+<div class="container">
+
+<h1>You are ___ 😝</h1>
+
+<button onmouseover="moveButton(this)">baddie</button>
+<button onclick="next1()">Dumbo</button>
+<button onmouseover="moveButton(this)">Cute</button>
+<button onmouseover="moveButton(this)">sundarr</button>
+
+</div>
+</div>
+
+<!-- SLIDE 2 -->
+
+<div class="slide" id="slide2" style="display:none">
+<div class="container">
+
+<h1>Who is the best person you know? 😌</h1>
+
+<button onmouseover="moveButton(this)">You</button>
+<button onclick="next2()">Me</button>
+<button onmouseover="moveButton(this)">Obviously You</button>
+<button onmouseover="moveButton(this)">Definitely You</button>
+
+</div>
+</div>
+
+<!-- SLIDE 3 CALENDAR -->
+
+<div class="slide" id="slide3" style="display:none">
+<div class="container">
+
+<h1>📅 Hmm whats the date today 🤔?</h1>
+
+<select id="day">
+<option value="">Day</option>
+<option>1</option><option>2</option><option>3</option>
+<option>4</option><option>5</option><option>6</option>
+<option>7</option><option>8</option><option>9</option>
+<option>10</option><option>11</option><option>12</option>
+<option>13</option><option>14</option><option>15</option>
+<option>16</option><option>17</option><option>18</option>
+<option>19</option><option>20</option><option>21</option>
+<option>22</option><option>23</option><option>24</option>
+<option>25</option><option>26</option><option>27</option>
+<option>28</option><option>29</option><option>30</option>
+<option>31</option>
+</select>
+
+<select id="month">
+<option value="">Month</option>
+<option>January</option>
+<option>February</option>
+<option>March</option>
+<option>April</option>
+<option>May</option>
+<option>June</option>
+<option>July</option>
+<option>August</option>
+<option>September</option>
+<option>October</option>
+<option>November</option>
+<option>December</option>
+</select>
+
+<select id="year">
+<option value="">Year</option>
+<option>2024</option>
+<option>2025</option>
+<option>2026</option>
+<option>2027</option>
+<option>2028</option>
+</select>
+
+<br><br>
+
+<button onclick="checkDate()">Submit</button>
+
+<p id="errorMsg">Bruhh let's try again 😑</p>
+
+</div>
+</div>
+
+<!-- SLIDE 4 CANDLES -->
+
+<div class="slide" id="slide4" style="display:none">
+<div class="container">
+
+<h1>Now it's time to blow the candles 🎂</h1>
+
+<div class="candles" id="candles">🕯🕯🕯</div>
+
+<div class="cake" onclick="blowCandles()">🎂</div>
+
+<p>Blow into the mic or tap the cake</p>
+
+</div>
+</div>
+
+<!-- SLIDE 5 GIFT -->
+
+<div class="slide" id="slide5" style="display:none">
+<div class="container">
+
+<h1>🎁 One last surprise</h1>
+<p>Tap the gift</p>
+
+<div class="gift" onclick="openGift()">🎁</div>
+
+</div>
+</div>
+
+<!-- FINAL SLIDE -->
+
+<div class="slide" id="slide6" style="display:none">
+<div class="container">
+
+<h1>🎉 HAPPY BIRTHDAY 🎂</h1>
+
+<p id="typedMessage"></p>
+
+</div>
+</div>
+
+<script>
+
+/* MUSIC */
+
+document.addEventListener("click",function(){
+document.getElementById("bgMusic").play()
+},{once:true})
+
+/* PARALLAX */
+
+document.addEventListener("mousemove",e=>{
+
+let x=(e.clientX/window.innerWidth)*30
+let y=(e.clientY/window.innerHeight)*30
+
+document.querySelectorAll(".slide").forEach(slide=>{
+slide.style.backgroundPosition=`${50-x/2}% ${50-y/2}%`
+})
+
+})
+
+/* BUTTON DODGE */
+
+function moveButton(btn){
+btn.style.position="absolute"
+btn.style.left=Math.random()*80+"%"
+btn.style.top=Math.random()*80+"%"
+}
+
+/* SLIDES */
+
+function next1(){
+slide1.style.display="none"
+slide2.style.display="flex"
+}
+
+function next2(){
+slide2.style.display="none"
+slide3.style.display="flex"
+}
+
+/* DATE CHECK */
+
+function checkDate(){
+
+let day=document.getElementById("day").value
+let month=document.getElementById("month").value
+let year=document.getElementById("year").value
+
+if(day=="17" && month=="March" && year=="2026"){
+slide3.style.display="none"
+slide4.style.display="flex"
+}
+else{
+let msg=document.getElementById("errorMsg")
+msg.style.display="block"
+setTimeout(()=>{msg.style.display="none"},2000)
+}
+
+}
+
+/* BLOW CANDLES */
+
+function blowCandles(){
+
+document.getElementById("candles").innerHTML="💨💨💨"
+
+setTimeout(()=>{
+slide4.style.display="none"
+slide5.style.display="flex"
+},1500)
+
+}
+
+/* GIFT */
+
+function openGift(){
+
+slide5.style.display="none"
+slide6.style.display="flex"
+
+confetti()
+fireworks()
+hearts()
+
+typeMessage()
+
+}
+
+/* MOVIE TYPING EFFECT */
+
+function typeMessage(){
+
+let text="Hope you have an amazing birthday and an incredible year ahead 💖"
+
+let i=0
+let speed=70
+
+function typing(){
+
+if(i<text.length){
+document.getElementById("typedMessage").innerHTML+=text.charAt(i)
+i++
+setTimeout(typing,speed)
+}
+
+}
+
+typing()
+
+}
+
+/* FIREWORKS */
+
+function fireworks(){
+
+for(let i=0;i<120;i++){
+
+let f=document.createElement("div")
+f.className="firework"
+
+let x=window.innerWidth/2
+let y=window.innerHeight/2
+
+f.style.left=x+"px"
+f.style.top=y+"px"
+f.style.background=`hsl(${Math.random()*360},100%,50%)`
+
+document.body.appendChild(f)
+
+let angle=Math.random()*360
+let velocity=Math.random()*6+4
+
+let dx=Math.cos(angle)*velocity
+let dy=Math.sin(angle)*velocity
+
+let life=0
+
+let anim=setInterval(()=>{
+
+life++
+x+=dx
+y+=dy
+
+f.style.left=x+"px"
+f.style.top=y+"px"
+
+if(life>40){
+clearInterval(anim)
+f.remove()
+}
+
+},16)
+
+}
+
+}
+
+/* CONFETTI */
+
+function confetti(){
+
+for(let i=0;i<200;i++){
+
+let c=document.createElement("div")
+c.className="confetti"
+
+c.style.left=Math.random()*100+"%"
+c.style.backgroundColor=`hsl(${Math.random()*360},100%,50%)`
+c.style.animationDuration=(Math.random()*3+2)+"s"
+
+document.body.appendChild(c)
+
+}
+
+}
+
+/* HEARTS */
+
+function hearts(){
+
+setInterval(()=>{
+
+let h=document.createElement("div")
+
+h.className="heart"
+h.innerHTML="💗"
+h.style.left=Math.random()*110+"%"
+
+document.body.appendChild(h)
+
+setTimeout(()=>h.remove(),4000)
+
+},300)
+
+}
+
+</script>
+
+</body>
+</html>
